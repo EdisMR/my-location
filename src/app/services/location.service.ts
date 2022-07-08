@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocationService {
 
-  constructor() { }
+  public getLocation(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        resolve(position);
+      });
+    });
+  }
+
+  constructor() {}
 }

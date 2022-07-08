@@ -1,1 +1,33 @@
-<p>main-app works!</p>
+<section class="map-container">
+</section>
+
+<section class="start-location">
+  <button mat-fab aria-label="Iniciar localización" matTooltip="Iniciar localización" (click)="getLocation()">
+    <mat-icon>location_searching</mat-icon>
+  </button>
+</section>
+
+<section class="actions-location">
+
+  <div class="action-container">
+    <div class="action-icon" matRipple (click)="share()">
+        <mat-icon matTooltip="Compartir ubicación">share</mat-icon>
+    </div>
+    <div class="action-text">Compartir Ubicación</div>
+  </div>
+
+  <div class="action-container">
+    <div class="action-icon" matTooltip="Copiar ubicación" matRipple (click)="copyText()">
+        <mat-icon>content_copy</mat-icon>
+    </div>
+    <div class="action-text">Copiar Ubicación</div>
+  </div>
+
+  <div class="action-container">
+    <div class="action-icon" matTooltip="Abrir en Google Maps" matRipple (click)="openOnGoogleMaps()">
+      <mat-icon>map</mat-icon>
+    </div>
+    <div class="action-text">Abrir en Google Maps</div>
+  </div>
+
+</section>

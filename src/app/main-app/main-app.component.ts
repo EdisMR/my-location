@@ -34,7 +34,7 @@ export class MainAppComponent implements OnInit {
     window.navigator
       .share({
         title: 'Ubicación Actual',
-        text: this.locationText(),
+        text: 'Mi ubicación actual',
         url: this.locationMapsUrl()
       })
   }

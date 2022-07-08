@@ -16,6 +16,7 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 const MaterialImports = [
@@ -25,7 +26,8 @@ const MaterialImports = [
   MatIconModule,
   MatTooltipModule,
   MatRippleModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatProgressSpinnerModule
 ]
 @NgModule({
   declarations: [

@@ -14,6 +14,7 @@ export class MainAppComponent implements OnInit {
   };
 
   isLocated: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private _location: LocationService,
@@ -36,14 +37,12 @@ export class MainAppComponent implements OnInit {
         text: this.locationText(),
         url: this.locationMapsUrl()
       })
-      .then(() => true)
-      .catch((error) => true);
   }
 
   copyText() {
     /* navigator clipboard */
     navigator.clipboard.writeText(this.locationText()).then(() => {
-      this.openSnackBar('Ubicación Copiada al Portapapeles', '');
+      this.openSnackBarRegular('Ubicación Copiada al Portapapeles');
     });
   }
 
@@ -56,18 +55,38 @@ export class MainAppComponent implements OnInit {
   }
 
   getLocation() {
+    this.isLoading = true;
     this._location.getLocation().then((position) => {
       this.location.lat = position.coords.latitude;
       this.location.lng = position.coords.longitude;
       this.isLocated = true;
-      this.openSnackBar('Ubicación Obtenida Correctamente', '');
+      this.openSnackBarSuccess('✅ Ubicación Obtenida Correctamente ✅');
+      this.isLoading = false;
+    })
+    .catch((error) => {
+      this.openSnackBarError('❌ Error Obteniendo Ubicación ❌', 'Ok');
+      this.isLoading = false;
+    })
+  }
+
+
+
+
+
+  openSnackBarSuccess(message: string) {
+    this._snackBar.open(message, '', {
+      duration: 2000
     });
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
+  openSnackBarRegular(message: string) {
+    this._snackBar.open(message, '', {
       duration: 2000,
     });
+  }
+
+  openSnackBarError(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
   ngOnInit(): void {}

@@ -3,7 +3,7 @@
 
 <section class="start-location">
   <button mat-fab aria-label="Iniciar localización" matTooltip="Iniciar localización" (click)="getLocation()">
-    <mat-icon>location_searching</mat-icon>
+    <mat-icon>person_pin_circle</mat-icon>
   </button>
 </section>
 
@@ -37,3 +37,7 @@
   </div>
 
 </section>
+
+<div id="loader-container">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>

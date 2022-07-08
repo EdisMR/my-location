@@ -7,15 +7,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { MainAppComponent } from './main-app/main-app.component';
 
 
 const MaterialImports = [
   MatToolbarModule,
+  MatSidenavModule
 ]
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    MainAppComponent
   ],
   imports: [
     BrowserModule,

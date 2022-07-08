@@ -7,7 +7,13 @@
   </button>
 </section>
 
-<section class="actions-location">
+<section id="show-location" *ngIf="isLocated">
+  <span id="location-text">
+    {{location.lat}}, {{location.lng}}
+  </span>
+</section>
+
+<section class="actions-location" *ngIf="isLocated">
 
   <div class="action-container">
     <div class="action-icon" matRipple (click)="share()">

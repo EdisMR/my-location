@@ -5,3 +5,13 @@
   min-height: 85vh;
   width: 100%;
 }
+
+.footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a{
+    color: #fff !important;
+  }
+}

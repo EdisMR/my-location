@@ -75,18 +75,25 @@ export class MainAppComponent implements OnInit {
 
   openSnackBarSuccess(message: string) {
     this._snackBar.open(message, '', {
-      duration: 2000
+      duration: 2000,
+      horizontalPosition:'center',
+      verticalPosition:'top'
     });
   }
 
   openSnackBarRegular(message: string) {
     this._snackBar.open(message, '', {
       duration: 2000,
+      horizontalPosition:'center',
+      verticalPosition:'top'
     });
   }
 
   openSnackBarError(message: string, action: string) {
-    this._snackBar.open(message, action);
+    this._snackBar.open(message, action,{
+      horizontalPosition:'center',
+      verticalPosition:'top'
+    });
   }
 
   ngOnInit(): void {}

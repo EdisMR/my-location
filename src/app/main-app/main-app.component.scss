@@ -1,3 +1,10 @@
+:host{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .start-location{
   display: flex;
@@ -58,4 +65,8 @@
   right: 50%;
   transform: translateX(50%);
   z-index: 1;
+}
+
+#location-text{
+  user-select: text;
 }

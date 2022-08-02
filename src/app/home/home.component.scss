@@ -1,15 +1,20 @@
-.drawer-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 86vh;
+#header{
+  position:fixed;
+  top:0;
+  left:0;
   width: 100%;
+  z-index: 100;
 }
 
-.footer{
+#footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 100;
 
   a{
     color: #fff !important;

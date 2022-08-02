@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./main-app.component.scss'],
 })
 export class MainAppComponent implements OnInit {
-  location = {
+  locationValues = {
     lat: 0,
     lng: 0,
   };
@@ -22,18 +22,18 @@ export class MainAppComponent implements OnInit {
   ) {}
 
   locationText(): string {
-    return `${this.location.lat},${this.location.lng}`;
+    return `${this.locationValues.lat},${this.locationValues.lng}`;
   }
 
   locationMapsUrl(): string {
-    return `https://www.google.com/maps/search/?api=1&query=${this.location.lat},${this.location.lng}`;
+    return `https://maps.google.com/?q=${this.locationValues.lat},${this.locationValues.lng}`;
   }
 
   share() {
     /* navigator share */
     window.navigator
       .share({
-        title: 'Ubicación Actual',
+        title: 'Mi Ubicación Actual',
         text: 'Mi ubicación actual',
         url: this.locationMapsUrl()
       })
@@ -57,16 +57,17 @@ export class MainAppComponent implements OnInit {
   getLocation() {
     this.isLoading = true;
     this._location.getLocation().then((position) => {
-      this.location.lat = position.coords.latitude;
-      this.location.lng = position.coords.longitude;
+      this.locationValues.lat = position.coords.latitude;
+      this.locationValues.lng = position.coords.longitude;
       this.isLocated = true;
-      this.openSnackBarSuccess('✅ Ubicación Obtenida Correctamente ✅');
-      this.isLoading = false;
+      this.openSnackBarSuccess('✅ Ubicación Obtenida Correctamente ');
     })
     .catch((error) => {
-      this.openSnackBarError('❌ Error Obteniendo Ubicación ❌', 'Ok');
-      this.isLoading = false;
+      this.openSnackBarError('❌ Error Obteniendo Ubicación ', 'Ok');
     })
+    .finally(() => {
+      this.isLoading = false;
+    });
   }
 
 
@@ -77,7 +78,8 @@ export class MainAppComponent implements OnInit {
     this._snackBar.open(message, '', {
       duration: 2000,
       horizontalPosition:'center',
-      verticalPosition:'top'
+      verticalPosition:'top',
+      panelClass: ['success-snackbar','snackbar-all']
     });
   }
 
@@ -85,14 +87,16 @@ export class MainAppComponent implements OnInit {
     this._snackBar.open(message, '', {
       duration: 2000,
       horizontalPosition:'center',
-      verticalPosition:'top'
+      verticalPosition:'top',
+      panelClass: ['regular-snackbar','snackbar-all']
     });
   }
 
   openSnackBarError(message: string, action: string) {
     this._snackBar.open(message, action,{
       horizontalPosition:'center',
-      verticalPosition:'top'
+      verticalPosition:'top',
+      panelClass: ['error-snackbar','snackbar-all']
     });
   }
 

@@ -11,3 +11,23 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.snackbar-all{
+  font-weight: 500;
+  font-size: 25px !important;
+  letter-spacing: 1.2px;
+}
+
+.success-snackbar{
+  background-color: #629e64 !important;
+  color: white !important;
+}
+
+.error-snackbar{
+  background-color: #a05f5a !important;
+  color: white !important;
+  font-weight: 700;
+}
+
+.regular-snackbar{
+}

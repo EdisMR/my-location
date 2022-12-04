@@ -16,7 +16,7 @@
 <section class="actions-location" *ngIf="isLocated">
 
   <div class="action-container">
-    <div class="action-icon" matRipple (click)="share()">
+    <div class="action-icon" matRipple (click)="shareLocation()">
         <mat-icon matTooltip="Compartir ubicación">share</mat-icon>
     </div>
     <div class="action-text">Compartir Ubicación</div>
@@ -37,7 +37,3 @@
   </div>
 
 </section>
-
-<div id="loader-container">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-</div>

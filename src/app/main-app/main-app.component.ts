@@ -22,24 +22,22 @@ export class MainAppComponent implements OnInit {
   locationSubscription: Subscription = this._location.locationValues$
     .subscribe((locationValues: LocationValuesInterface) => {
       this.locationValues = locationValues
-      console.log('locationValues', locationValues);
-
+      this.isLocated = true;
     })
 
   isLocated: boolean = false;
 
-
+  locationValuesCompleteInfo: any = {};
+  locationCompleteValues = this._location.getCompleteInfoLocation$
+    .subscribe((locationValues: any) => {
+      this.locationValuesCompleteInfo = locationValues
+    })
 
 
 
   getLocation() {
     this.clearLocationObserver();
     this._location.runObserverForLocation()
-      .then((isLocated: boolean) => {
-        this.isLocated = isLocated;
-      })
-      .catch((error: any) => {
-      })
   }
 
   clearLocationObserver() {

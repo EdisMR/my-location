@@ -1,39 +1,74 @@
-<section class="map-container">
-</section>
+<main class="main-app-container">
 
-<section class="start-location">
-  <button mat-fab aria-label="Iniciar localización" matTooltip="Iniciar localización" (click)="getLocation()">
-    <mat-icon>person_pin_circle</mat-icon>
-  </button>
-</section>
 
-<section id="show-location" *ngIf="isLocated">
-  <span id="location-text">
-    {{locationValues.lat}}, {{locationValues.lng}}
-  </span>
-</section>
 
-<section class="actions-location" *ngIf="isLocated">
+  <section class="map-container">
+  </section>
 
-  <div class="action-container">
-    <div class="action-icon" matRipple (click)="shareLocation()">
+  <section class="start-location">
+    <button mat-fab aria-label="Iniciar localización" matTooltip="Iniciar localización" (click)="getLocation()">
+      <mat-icon>person_pin_circle</mat-icon>
+    </button>
+  </section>
+
+  <section id="show-location" *ngIf="isLocated">
+    <span id="location-text">
+      {{locationValues.lat}}, {{locationValues.lng}}
+    </span>
+  </section>
+
+  <section class="actions-location" *ngIf="isLocated">
+
+    <div class="action-container">
+      <div class="action-icon" matRipple (click)="shareLocation()">
         <mat-icon matTooltip="Compartir ubicación">share</mat-icon>
+      </div>
+      <div class="action-text">Compartir Ubicación</div>
     </div>
-    <div class="action-text">Compartir Ubicación</div>
-  </div>
 
-  <div class="action-container">
-    <div class="action-icon" matTooltip="Copiar ubicación" matRipple (click)="copyText()">
+    <div class="action-container">
+      <div class="action-icon" matTooltip="Copiar ubicación" matRipple (click)="copyText()">
         <mat-icon>content_copy</mat-icon>
+      </div>
+      <div class="action-text">Copiar Ubicación</div>
     </div>
-    <div class="action-text">Copiar Ubicación</div>
-  </div>
 
-  <div class="action-container">
-    <div class="action-icon" matTooltip="Abrir en Google Maps" matRipple (click)="openOnGoogleMaps()">
-      <mat-icon>map</mat-icon>
+    <div class="action-container">
+      <div class="action-icon" matTooltip="Abrir en Google Maps" matRipple (click)="openOnGoogleMaps()">
+        <mat-icon>map</mat-icon>
+      </div>
+      <div class="action-text">Abrir en Google Maps</div>
     </div>
-    <div class="action-text">Abrir en Google Maps</div>
-  </div>
 
-</section>
+    <div>
+      <details>
+        <summary>Complete location infomation</summary>
+        <div>
+          <span>Latitude:</span><span>{{locationValuesCompleteInfo.latitude}}</span>
+        </div>
+        <div>
+          <span>Longitude:</span><span>{{locationValuesCompleteInfo.longitude}}</span>
+        </div>
+        <div>
+          <span>Altitude:</span><span>{{locationValuesCompleteInfo.altitude}}</span>
+        </div>
+        <div>
+          <span>Accuracy:</span><span>{{locationValuesCompleteInfo.accuracy}}</span>
+        </div>
+        <div>
+          <span>Altitude Accuracy:</span><span>{{locationValuesCompleteInfo.altitudeAccuracy}}</span>
+        </div>
+        <div>
+          <span>Heading:</span><span>{{locationValuesCompleteInfo.heading}}</span>
+        </div>
+        <div>
+          <span>Speed:</span><span>{{locationValuesCompleteInfo.speed}}</span>
+        </div>
+      </details>
+    </div>
+
+  </section>
+
+
+
+</main>

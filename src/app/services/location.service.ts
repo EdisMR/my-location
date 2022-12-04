@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationValuesInterface, optionsForLocationInterface } from '../interfaces/location-types';
 import { AlertsService } from './alerts.service';
 
@@ -27,16 +27,19 @@ export class LocationService {
     lng: 0,
   };
 
-  private locationWatcher: number = 0;
+  private locationWatcher: any
 
 
 
   /* ************************ */
   /* **** POSITION OBSERVER **** */
   /* ************************ */
-  private locationValuesOrigin = new BehaviorSubject<LocationValuesInterface>(this.locationValues);
-  public locationValues$ = this.locationValuesOrigin.asObservable();
+  private locationValuesOrigin: BehaviorSubject<LocationValuesInterface> = new BehaviorSubject<LocationValuesInterface>(this.locationValues);
+  public locationValues$: Observable<LocationValuesInterface> = this.locationValuesOrigin.asObservable();
 
+  private locationValuesCompleteInfoSource: any = {};
+  private locationValuesCompleteInfo: BehaviorSubject<any> = new BehaviorSubject<any>(this.locationValuesCompleteInfoSource);
+  public getCompleteInfoLocation$: Observable<any> = this.locationValuesCompleteInfo.asObservable();
 
   /* ****************** */
   /* **** GET VALUES **** */
@@ -58,24 +61,22 @@ export class LocationService {
   /* ********************* */
   /* **** PUBLIC ACTIONS **** */
   /* ********************* */
-  public runObserverForLocation(): Promise<boolean> {
-    let promise: Promise<boolean> = new Promise((resolve, reject) => {
-      this._alert.message('Buscando Ubicación...');
-      this.locationWatcher = navigator.geolocation.watchPosition(
-        (position) => {
-          this.locationValues.lat = position.coords.latitude;
-          this.locationValues.lng = position.coords.longitude;
-          resolve(true);
-          this.locationValuesOrigin.next(this.locationValues);
-        },
-        (err) => {
-          reject(false);
-          this._alert.error('No se pudo obtener la ubicación', 'Ok');
-        },
-        this.options
-      );
-    });
-    return promise;
+  public runObserverForLocation(): void {
+    this.stopObserverForLocation();
+    this._alert.message('Buscando Ubicación...');
+    this.locationWatcher = navigator.geolocation.watchPosition(
+      (position) => {
+        this.locationValuesCompleteInfoSource = position.coords;
+        this.locationValues.lat = position.coords.latitude;
+        this.locationValues.lng = position.coords.longitude;
+        this.locationValuesOrigin.next(this.locationValues);
+        this.locationValuesCompleteInfo.next(this.locationValuesCompleteInfoSource);
+      },
+      (err) => {
+        this._alert.error('No se pudo obtener la ubicación', 'Ok');
+      },
+      this.options
+    );
   }
 
   public stopObserverForLocation() {

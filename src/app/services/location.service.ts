@@ -86,7 +86,7 @@ export class LocationService {
     window.navigator
       .share({
         title: 'Mi Ubicación Actual',
-        text: 'Mi ubicación actual',
+        text: this.textForClipboard,
         url: this.getLocationMapsUrl
       })
   }

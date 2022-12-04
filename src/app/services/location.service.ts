@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject } from 'rxjs';
 import { LocationValuesInterface, optionsForLocationInterface } from '../interfaces/location-types';
 import { AlertsService } from './alerts.service';
@@ -10,7 +9,7 @@ import { AlertsService } from './alerts.service';
 export class LocationService {
 
   constructor(
-    private _alert:AlertsService
+    private _alert: AlertsService
   ) { }
 
   /* ******************* */
@@ -59,19 +58,24 @@ export class LocationService {
   /* ********************* */
   /* **** PUBLIC ACTIONS **** */
   /* ********************* */
-  public runObserverForLocation() {
-    this._alert.message('Buscando Ubicación...');
-    this.locationWatcher = navigator.geolocation.watchPosition(
-      (position) => {
-        this.locationValues.lat = position.coords.latitude;
-        this.locationValues.lng = position.coords.longitude;
-        this.locationValuesOrigin.next(this.locationValues);
-      },
-      (err) => {
-        this._alert.error('No se pudo obtener la ubicación', 'Reintentar');
-      },
-      this.options
-    );
+  public runObserverForLocation(): Promise<boolean> {
+    let promise: Promise<boolean> = new Promise((resolve, reject) => {
+      this._alert.message('Buscando Ubicación...');
+      this.locationWatcher = navigator.geolocation.watchPosition(
+        (position) => {
+          this.locationValues.lat = position.coords.latitude;
+          this.locationValues.lng = position.coords.longitude;
+          resolve(true);
+          this.locationValuesOrigin.next(this.locationValues);
+        },
+        (err) => {
+          reject(false);
+          this._alert.error('No se pudo obtener la ubicación', 'Ok');
+        },
+        this.options
+      );
+    });
+    return promise;
   }
 
   public stopObserverForLocation() {

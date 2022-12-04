@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationService } from '../services/location.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { LocationValuesInterface } from '../interfaces/location-types';
 import { Subscription } from 'rxjs';
+import { LocationValuesInterface } from '../interfaces/location-types';
+import { LocationService } from '../services/location.service';
 
 @Component({
   selector: 'app-main-app',
@@ -12,7 +11,6 @@ import { Subscription } from 'rxjs';
 export class MainAppComponent implements OnInit {
   constructor(
     private _location: LocationService,
-    private _snackBar: MatSnackBar
   ) { }
 
 
@@ -24,6 +22,8 @@ export class MainAppComponent implements OnInit {
   locationSubscription: Subscription = this._location.locationValues$
     .subscribe((locationValues: LocationValuesInterface) => {
       this.locationValues = locationValues
+      console.log('locationValues', locationValues);
+
     })
 
   isLocated: boolean = false;
@@ -33,7 +33,13 @@ export class MainAppComponent implements OnInit {
 
 
   getLocation() {
-    this._location.runObserverForLocation();
+    this.clearLocationObserver();
+    this._location.runObserverForLocation()
+      .then((isLocated: boolean) => {
+        this.isLocated = isLocated;
+      })
+      .catch((error: any) => {
+      })
   }
 
   clearLocationObserver() {

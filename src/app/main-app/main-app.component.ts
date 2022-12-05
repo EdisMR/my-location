@@ -20,7 +20,7 @@ export class MainAppComponent implements OnInit {
     return this._location.isLocated;
   }
 
-  locationList: LocationValuesInterface[] = [];
+  private locationList: LocationValuesInterface[] = [];
 
   public get lastValueLocationList(): { lat: number, lng: number } {
     if (this.locationList.length > 0) {
@@ -30,11 +30,18 @@ export class MainAppComponent implements OnInit {
     return { lat: 0, lng: 0 }
   }
 
-  locationValuesCompleteInfo: any = {};
-  locationCompleteValues = this._location.getCompleteInfoLocation$
+  public get reverseLocationList(): { lat: number, lng: number }[] {
+    return this.locationList.reverse();
+  }
+
+
+
+  /* OBTAIN COMPLETE INFO FROM LOCATION SERVICE */
+  public locationValuesCompleteInfo: any = {};
+  private locationCompleteValuesSubscription = this._location.getCompleteInfoLocation$
     .subscribe((locationValues: any) => {
       this.locationValuesCompleteInfo = locationValues
-      if (this.locationValuesCompleteInfo.latitude!=0 && this.locationValuesCompleteInfo.longitude!=0) {
+      if (this.locationValuesCompleteInfo.latitude != 0 && this.locationValuesCompleteInfo.longitude != 0) {
         /* avoid repeating last value */
         if (this.locationList.length > 0) {
           let lastValue = this.locationList[this.locationList.length - 1];
@@ -45,7 +52,7 @@ export class MainAppComponent implements OnInit {
           if (lastValue.lat !== newValue.lat && lastValue.lng !== newValue.lng) {
             this.locationList.push(newValue);
           }
-        }else{
+        } else {
           this.locationList.push({
             lat: locationValues.latitude,
             lng: locationValues.longitude
@@ -56,31 +63,36 @@ export class MainAppComponent implements OnInit {
 
 
 
-  getLocation() {
+  public getLocation() {
     this.clearLocationObserver();
     this._location.runObserverForLocation()
   }
 
-  clearLocationObserver() {
+  private clearLocationObserver() {
     this._location.stopObserverForLocation();
   }
 
-  openOnGoogleMaps() {
+  public openOnGoogleMaps() {
     this._location.openLocationOnGoogleMaps();
   }
 
-  copyText() {
+  public copyText() {
     this._location.copyTextClipboard();
   }
 
-  shareLocation() {
+  public shareLocation() {
     this._location.shareLocation();
   }
 
-  trackByFn(index: any, item: any) {
+  public trackByFn(index: any, item: any) {
     return index;
   }
 
 
   ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    this.clearLocationObserver();
+    this.locationCompleteValuesSubscription?.unsubscribe();
+  }
 }

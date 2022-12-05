@@ -16,5 +16,5 @@
   "my-current-location-is": "My current location is",
   "locating": "Locating...",
   "error-locating":"Could not get your location",
-  "copied-location":"Location copied to clipboard",
+  "copied-location":"Location copied to clipboard"
 }

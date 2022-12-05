@@ -19,22 +19,22 @@
 
   <section class="actions-location" *ngIf="isLocated">
 
-    <div class="action-container">
-      <div class="action-icon" matRipple (click)="shareLocation()">
+    <div class="action-container" matRipple (click)="shareLocation()">
+      <div class="action-icon">
         <mat-icon matTooltip="Compartir ubicación">share</mat-icon>
       </div>
       <div class="action-text">Compartir Ubicación</div>
     </div>
 
-    <div class="action-container">
-      <div class="action-icon" matTooltip="Copiar ubicación" matRipple (click)="copyText()">
+    <div class="action-container" matRipple (click)="copyText()">
+      <div class="action-icon" matTooltip="Copiar ubicación">
         <mat-icon>content_copy</mat-icon>
       </div>
       <div class="action-text">Copiar Ubicación</div>
     </div>
 
-    <div class="action-container">
-      <div class="action-icon" matTooltip="Abrir en Google Maps" matRipple (click)="openOnGoogleMaps()">
+    <div class="action-container" matRipple (click)="openOnGoogleMaps()">
+      <div class="action-icon" matTooltip="Abrir en Google Maps">
         <mat-icon>map</mat-icon>
       </div>
       <div class="action-text">Abrir en Google Maps</div>

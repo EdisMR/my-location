@@ -23,16 +23,18 @@ export class MainAppComponent implements OnInit {
   locationList: LocationValuesInterface[] = [];
 
   public get lastValueLocationList(): { lat: number, lng: number } {
-    let lastValue = this.locationList[this.locationList.length - 1];
-    lastValue = lastValue ? lastValue : { lat: 0, lng: 0 };
-    return lastValue;
+    if (this.locationList.length > 0) {
+      let lastValue = this.locationList[this.locationList.length - 1];
+      return lastValue
+    }
+    return { lat: 0, lng: 0 }
   }
 
   locationValuesCompleteInfo: any = {};
   locationCompleteValues = this._location.getCompleteInfoLocation$
     .subscribe((locationValues: any) => {
       this.locationValuesCompleteInfo = locationValues
-      if (this.isLocated) {
+      if (this.locationValuesCompleteInfo.latitude!=0 && this.locationValuesCompleteInfo.longitude!=0) {
         /* avoid repeating last value */
         if (this.locationList.length > 0) {
           let lastValue = this.locationList[this.locationList.length - 1];
@@ -43,6 +45,11 @@ export class MainAppComponent implements OnInit {
           if (lastValue.lat !== newValue.lat && lastValue.lng !== newValue.lng) {
             this.locationList.push(newValue);
           }
+        }else{
+          this.locationList.push({
+            lat: locationValues.latitude,
+            lng: locationValues.longitude
+          });
         }
       }
     })

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { LocationValuesInterface } from '../interfaces/location-types';
 import { LocationService } from '../services/location.service';
 
@@ -17,23 +16,28 @@ export class MainAppComponent implements OnInit {
   /* ********************** */
   /* **** LOCATION VALUES **** */
   /* ********************** */
-  isLocated: boolean = false;
+  public get isLocated(): boolean {
+    return this._location.isLocated;
+  }
 
   locationList: LocationValuesInterface[] = [];
 
   public get lastValueLocationList():{lat: number, lng: number} {
-    return this.locationList[this.locationList.length - 1];
+    let lastValue = this.locationList[this.locationList.length - 1];
+    lastValue = lastValue ? lastValue : {lat: 0, lng: 0};
+    return lastValue;
   }
 
   locationValuesCompleteInfo: any = {};
   locationCompleteValues = this._location.getCompleteInfoLocation$
     .subscribe((locationValues: any) => {
       this.locationValuesCompleteInfo = locationValues
-      this.locationList.push({
-        lat: locationValues.latitude,
-        lng: locationValues.longitude,
-      })
-      this.isLocated = true;
+      if(this.isLocated){
+        this.locationList.push({
+          lat: locationValues.latitude,
+          lng: locationValues.longitude,
+        })
+      }
     })
 
 
@@ -59,6 +63,9 @@ export class MainAppComponent implements OnInit {
     this._location.shareLocation();
   }
 
+  trackByFn(index: any, item: any) {
+    return index;
+  }
 
 
   ngOnInit(): void { }

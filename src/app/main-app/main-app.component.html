@@ -70,7 +70,7 @@
     <div class="action-container">
       <details>
         <summary>Geolocation history</summary>
-        <div *ngFor="let item of locationList">
+        <div *ngFor="let item of locationList;trackBy:trackByFn">
           <span>{{item.lat}},{{item.lng}}</span>
         </div>
       </details>

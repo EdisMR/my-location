@@ -29,7 +29,7 @@ export class LocationService {
 
   private locationWatcher: any
 
-
+  isLocated: boolean = false;
 
   /* ************************ */
   /* **** POSITION OBSERVER **** */
@@ -70,6 +70,7 @@ export class LocationService {
         this.locationValues.lat = position.coords.latitude;
         this.locationValues.lng = position.coords.longitude;
         this.locationValuesCompleteInfo.next(this.locationValuesCompleteInfoSource);
+        this.isLocated = true;
       },
       (err) => {
         this._alert.error('No se pudo obtener la ubicación', 'Ok');

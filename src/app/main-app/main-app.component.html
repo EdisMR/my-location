@@ -70,8 +70,8 @@
     <div class="action-container">
       <details>
         <summary>{{'geo-history'|translate}}</summary>
-        <div *ngFor="let item of reverseLocationList;trackBy:trackByFn;index as $index">
-          <span>{{$index}} - {{item.lat}},{{item.lng}}</span>
+        <div *ngFor="let item of reverseLocationList;trackBy:trackByFn;first as isFirst">
+          <span *ngIf="isFirst">&#62;&nbsp;&nbsp;</span><span>{{item.lat}},{{item.lng}}</span>
         </div>
       </details>
     </div>

@@ -24,6 +24,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SplashComponent } from './components/other/splash/splash.component';
+import { NoPageComponent } from './components/pages/no-page/no-page.component';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -44,7 +46,9 @@ const MaterialImports = [
   declarations: [
     AppComponent,
     HomeComponent,
-    MainAppComponent
+    MainAppComponent,
+    SplashComponent,
+    NoPageComponent
   ],
   imports: [
     BrowserModule,

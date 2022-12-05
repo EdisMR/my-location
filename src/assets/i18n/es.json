@@ -1,3 +1,20 @@
 {
-  "app-title": "Mi ubicación"
+  "app-title": "Mi Ubicación",
+  "share-location": "Compartir ubicación",
+  "copy-location": "Copiar ubicación",
+  "open-location-gmaps": "Abrir en Google Maps",
+  "lat": "Latitud",
+  "lng": "Longitud",
+  "alt": "Altitud",
+  "acc": "Precisión",
+  "alt-acc": "Precisión de altitud",
+  "heading": "Dirección",
+  "speed": "Velocidad",
+  "geo-info":"Información de geolocalización",
+  "geo-history":"Historial de geolocalización",
+  "my-current-location": "Mi ubicación actual",
+  "my-current-location-is": "Mi ubicación actual es",
+  "locating": "Localizando...",
+  "error-locating":"No se pudo obtener la ubicación",
+  "copied-location":"Ubicación copiada al portapapeles",
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationValuesInterface, optionsForLocationInterface } from '../interfaces/location-types';
 import { AlertsService } from './alerts.service';
+import { TranlateServiceApp } from './tranlate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,8 @@ import { AlertsService } from './alerts.service';
 export class LocationService {
 
   constructor(
-    private _alert: AlertsService
+    private _alert: AlertsService,
+    private _translateSvc:TranlateServiceApp
   ) { }
 
   /* ******************* */
@@ -53,7 +55,8 @@ export class LocationService {
   }
 
   private get textForClipboard(): string {
-    return `Mi ubicación actual es: ${this.getCoordinatesText}`;
+    let initialText:string=this._translateSvc.getOneText('my-current-location-is');
+    return `${initialText}: ${this.getCoordinatesText}`;
   }
 
 
@@ -63,7 +66,8 @@ export class LocationService {
   /* ********************* */
   public runObserverForLocation(): void {
     this.stopObserverForLocation();
-    this._alert.message('Buscando Ubicación...');
+    let messageLocating:string=this._translateSvc.getOneText('locating');
+    this._alert.message(messageLocating);
     this.locationWatcher = navigator.geolocation.watchPosition(
       (position) => {
         this.locationValuesCompleteInfoSource = position.coords;
@@ -73,7 +77,8 @@ export class LocationService {
         this.isLocated = true;
       },
       (err) => {
-        this._alert.error('No se pudo obtener la ubicación', 'Ok');
+        let messageErrorLocating:string=this._translateSvc.getOneText('error-locating');
+        this._alert.error(messageErrorLocating,'Ok');
       },
       this.options
     );
@@ -84,17 +89,19 @@ export class LocationService {
   }
 
   public shareLocation() {
+    let messageMyCurrentLocation:string=this._translateSvc.getOneText('my-current-location');
     window.navigator
       .share({
-        title: 'Mi Ubicación Actual',
+        title: messageMyCurrentLocation,
         text: this.textForClipboard,
         url: this.getLocationMapsUrl
       })
   }
 
   public copyTextClipboard() {
+    let messageCopiedLocation:string=this._translateSvc.getOneText('copied-location');
     navigator.clipboard.writeText(this.textForClipboard).then(() => {
-      this._alert.success('Ubicación Copiada al Portapapeles');
+      this._alert.success(messageCopiedLocation);
     });
   }
 

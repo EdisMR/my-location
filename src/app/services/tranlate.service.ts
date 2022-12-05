@@ -34,4 +34,8 @@ export class TranlateServiceApp {
     return this._translate.currentLang;
   }
 
+  public getOneText(index:string) {
+    return this._translate.instant(index);
+  }
+
 }

@@ -1,3 +1,20 @@
 {
-  "app-title": "My Location"
+  "app-title": "My Location",
+  "share-location": "Share location",
+  "copy-location": "Copy location",
+  "open-location-gmaps": "Open in Google Maps",
+  "lat": "Latitude",
+  "lng": "Longitude",
+  "alt":"Altitude",
+  "acc":"Accuracy",
+  "alt-acc":"Altitude accuracy",
+  "heading":"Heading",
+  "speed":"Speed",
+  "geo-info":"Geolocation infomation",
+  "geo-history":"Geolocation history",
+  "my-current-location":"My current location",
+  "my-current-location-is": "My current location is",
+  "locating": "Locating...",
+  "error-locating":"Could not get your location",
+  "copied-location":"Location copied to clipboard",
 }

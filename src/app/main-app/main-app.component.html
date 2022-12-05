@@ -13,7 +13,7 @@
 
   <section id="show-location" *ngIf="isLocated">
     <span id="location-text">
-      {{locationValues.lat}}, {{locationValues.lng}}
+      {{lastValueLocationList.lat}}, {{lastValueLocationList.lng}}
     </span>
   </section>
 
@@ -40,9 +40,9 @@
       <div class="action-text">Abrir en Google Maps</div>
     </div>
 
-    <div>
+    <div class="action-container">
       <details>
-        <summary>Complete geolocation infomation</summary>
+        <summary>Geolocation infomation</summary>
         <div>
           <span>Latitude:</span><span>{{locationValuesCompleteInfo.latitude}}</span>
         </div>
@@ -63,6 +63,15 @@
         </div>
         <div>
           <span>Speed:</span><span>{{locationValuesCompleteInfo.speed}}</span>
+        </div>
+      </details>
+    </div>
+
+    <div class="action-container">
+      <details>
+        <summary>Geolocation history</summary>
+        <div *ngFor="let item of locationList">
+          <span>{{item.lat}},{{item.lng}}</span>
         </div>
       </details>
     </div>

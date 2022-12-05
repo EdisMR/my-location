@@ -34,10 +34,10 @@ export class LocationService {
   /* ************************ */
   /* **** POSITION OBSERVER **** */
   /* ************************ */
-  private locationValuesOrigin: BehaviorSubject<LocationValuesInterface> = new BehaviorSubject<LocationValuesInterface>(this.locationValues);
-  public locationValues$: Observable<LocationValuesInterface> = this.locationValuesOrigin.asObservable();
-
-  private locationValuesCompleteInfoSource: any = {};
+  private locationValuesCompleteInfoSource: any = {
+    latitude: 0,
+    longitude: 0,
+  };
   private locationValuesCompleteInfo: BehaviorSubject<any> = new BehaviorSubject<any>(this.locationValuesCompleteInfoSource);
   public getCompleteInfoLocation$: Observable<any> = this.locationValuesCompleteInfo.asObservable();
 
@@ -69,7 +69,6 @@ export class LocationService {
         this.locationValuesCompleteInfoSource = position.coords;
         this.locationValues.lat = position.coords.latitude;
         this.locationValues.lng = position.coords.longitude;
-        this.locationValuesOrigin.next(this.locationValues);
         this.locationValuesCompleteInfo.next(this.locationValuesCompleteInfoSource);
       },
       (err) => {

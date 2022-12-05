@@ -17,20 +17,23 @@ export class MainAppComponent implements OnInit {
   /* ********************** */
   /* **** LOCATION VALUES **** */
   /* ********************** */
-  locationValues: LocationValuesInterface = {} as LocationValuesInterface;
-
-  locationSubscription: Subscription = this._location.locationValues$
-    .subscribe((locationValues: LocationValuesInterface) => {
-      this.locationValues = locationValues
-      this.isLocated = true;
-    })
-
   isLocated: boolean = false;
+
+  locationList: LocationValuesInterface[] = [];
+
+  public get lastValueLocationList():{lat: number, lng: number} {
+    return this.locationList[this.locationList.length - 1];
+  }
 
   locationValuesCompleteInfo: any = {};
   locationCompleteValues = this._location.getCompleteInfoLocation$
     .subscribe((locationValues: any) => {
       this.locationValuesCompleteInfo = locationValues
+      this.locationList.push({
+        lat: locationValues.latitude,
+        lng: locationValues.longitude,
+      })
+      this.isLocated = true;
     })
 
 

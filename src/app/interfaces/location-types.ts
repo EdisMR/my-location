@@ -1,6 +1,12 @@
 export interface LocationValuesInterface {
-  lat: number;
-  lng: number;
+  timestamp: number;
+  latitude: number;
+  longitude: number;
+  accuracy: number;
+  altitude: number;
+  altitudeAccuracy: number;
+  heading: number;
+  speed: number;
 }
 
 export interface optionsForLocationInterface {

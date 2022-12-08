@@ -13,7 +13,7 @@
 
   <section id="show-location" *ngIf="isLocated">
     <span id="location-text">
-      {{lastValueLocationList.lat}}, {{lastValueLocationList.lng}}
+      {{(locationLastValue|async)?.latitude}}, {{(locationLastValue|async)?.longitude}}
     </span>
   </section>
 
@@ -44,25 +44,25 @@
       <details>
         <summary>{{'geo-info'|translate}}</summary>
         <div>
-          <span>{{'lat'|translate}}: </span><span>{{locationValuesCompleteInfo.latitude}}</span>
+          <span>{{'lat'|translate}}: </span><span>{{(locationLastValue|async)?.latitude}}</span>
         </div>
         <div>
-          <span>{{'lng'|translate}}: </span><span>{{locationValuesCompleteInfo.longitude}}</span>
+          <span>{{'lng'|translate}}: </span><span>{{(locationLastValue|async)?.longitude}}</span>
         </div>
         <div>
-          <span>{{'acc'|translate}}: </span><span>{{locationValuesCompleteInfo.accuracy}}</span>
+          <span>{{'acc'|translate}}: </span><span>{{(locationLastValue|async)?.accuracy}}</span>
         </div>
         <div>
-          <span>{{'alt'|translate}}: </span><span>{{locationValuesCompleteInfo.altitude}}</span>
+          <span>{{'alt'|translate}}: </span><span>{{(locationLastValue|async)?.altitude}}</span>
         </div>
         <div>
-          <span>{{'alt-acc'|translate}}: </span><span>{{locationValuesCompleteInfo.altitudeAccuracy}}</span>
+          <span>{{'alt-acc'|translate}}: </span><span>{{(locationLastValue|async)?.altitudeAccuracy}}</span>
         </div>
         <div>
-          <span>{{'heading'|translate}}: </span><span>{{locationValuesCompleteInfo.heading}}</span>
+          <span>{{'heading'|translate}}: </span><span>{{(locationLastValue|async)?.heading}}</span>
         </div>
         <div>
-          <span>{{'speed'|translate}}: </span><span>{{locationValuesCompleteInfo.speed}}</span>
+          <span>{{'speed'|translate}}: </span><span>{{(locationLastValue|async)?.speed}}</span>
         </div>
       </details>
     </div>
@@ -70,8 +70,8 @@
     <div class="action-container">
       <details>
         <summary>{{'geo-history'|translate}}</summary>
-        <div *ngFor="let item of reverseLocationList;trackBy:trackByFn;first as isFirst">
-          <span *ngIf="isFirst">&#62;&nbsp;&nbsp;</span><span>{{item.lat}},{{item.lng}}</span>
+        <div *ngFor="let item of locationListReversed | async;trackBy:trackByFn;first as isFirst">
+          <span *ngIf="isFirst">&gt;&nbsp;&nbsp;</span><span>{{item.latitude}},{{item.longitude}}</span>
         </div>
       </details>
     </div>

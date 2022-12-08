@@ -24,39 +24,34 @@ export class LocationService {
     maximumAge: 0,
   };
 
-  private locationValues: LocationValuesInterface = {
-    lat: 0,
-    lng: 0,
-  };
-
   private locationWatcher: any
 
-  isLocated: boolean = false;
+  public isLocated: boolean = false;
 
-  /* ************************ */
-  /* **** POSITION OBSERVER **** */
-  /* ************************ */
-  private locationValuesCompleteInfoSource: any = {
-    latitude: 0,
-    longitude: 0,
-  };
-  private locationValuesCompleteInfo: BehaviorSubject<any> = new BehaviorSubject<any>(this.locationValuesCompleteInfoSource);
-  public getCompleteInfoLocation$: Observable<any> = this.locationValuesCompleteInfo.asObservable();
+  private locationListSource: LocationValuesInterface[] = [];
+  private get locationListSourceReversed(): LocationValuesInterface[] {
+    return this.locationListSource.reverse();
+  }
+  private locationListReversed:BehaviorSubject<LocationValuesInterface[]> = new BehaviorSubject<LocationValuesInterface[]>(this.locationListSourceReversed);
+  public locationListReversed$:Observable<LocationValuesInterface[]> = this.locationListReversed.asObservable();
+
+  private locationLastValue:BehaviorSubject<LocationValuesInterface> = new BehaviorSubject<LocationValuesInterface>({} as LocationValuesInterface);
+  public locationLastValue$:Observable<LocationValuesInterface> = this.locationLastValue.asObservable();
+
+
+
 
   /* ****************** */
   /* **** GET VALUES **** */
   /* ****************** */
-  private get getCoordinatesText(): string {
-    return `${this.locationValues.lat},${this.locationValues.lng}`;
+  private get getCoordinatesSourceText(): string {
+    let locationLastValueTemp:LocationValuesInterface = this.locationLastValue.getValue();
+    return `${locationLastValueTemp.latitude},${locationLastValueTemp.longitude}`;
   }
 
   private get getLocationMapsUrl(): string {
-    return `https://maps.google.com/?q=${this.locationValues.lat},${this.locationValues.lng}`;
-  }
-
-  private get textForClipboard(): string {
-    let initialText:string=this._translateSvc.getOneText('my-current-location-is');
-    return `${initialText}: ${this.getCoordinatesText}`;
+    let locationLastValueTemp:LocationValuesInterface = this.locationLastValue.getValue();
+    return `https://maps.google.com/?q=${locationLastValueTemp.latitude},${locationLastValueTemp.longitude}`;
   }
 
 
@@ -66,14 +61,19 @@ export class LocationService {
   /* ********************* */
   public runObserverForLocation(): void {
     this.stopObserverForLocation();
+
     let messageLocating:string=this._translateSvc.getOneText('locating');
     this._alert.message(messageLocating);
+
     this.locationWatcher = navigator.geolocation.watchPosition(
-      (position) => {
-        this.locationValuesCompleteInfoSource = position.coords;
-        this.locationValues.lat = position.coords.latitude;
-        this.locationValues.lng = position.coords.longitude;
-        this.locationValuesCompleteInfo.next(this.locationValuesCompleteInfoSource);
+      (position:any) => {
+        /* prevent emit last value */
+        let lastValue:LocationValuesInterface = this.locationLastValue.getValue();
+        if (lastValue.latitude !== position.coords.latitude && lastValue.longitude !== position.coords.longitude) {
+          this.locationListSource.push(position.coords);
+          this.locationListReversed.next(this.locationListSourceReversed);
+          this.locationLastValue.next(position.coords);
+        }
         this.isLocated = true;
       },
       (err) => {
@@ -93,14 +93,14 @@ export class LocationService {
     window.navigator
       .share({
         title: messageMyCurrentLocation,
-        text: this.textForClipboard,
+        text: `${messageMyCurrentLocation}: ${this.getCoordinatesSourceText}`,
         url: this.getLocationMapsUrl
       })
   }
 
   public copyTextClipboard() {
     let messageCopiedLocation:string=this._translateSvc.getOneText('copied-location');
-    navigator.clipboard.writeText(this.textForClipboard).then(() => {
+    navigator.clipboard.writeText(this.getCoordinatesSourceText).then(() => {
       this._alert.success(messageCopiedLocation);
     });
   }

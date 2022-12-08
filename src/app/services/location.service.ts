@@ -60,6 +60,7 @@ export class LocationService {
   /* **** PUBLIC ACTIONS **** */
   /* ********************* */
   public runObserverForLocation(): void {
+    console.log('runObserverForLocation()');
     this.stopObserverForLocation();
 
     let messageLocating:string=this._translateSvc.getOneText('locating');

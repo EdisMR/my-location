@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { LocationValuesInterface } from '../interfaces/location-types';
 import { LocationService } from '../services/location.service';
 
@@ -7,12 +7,10 @@ import { LocationService } from '../services/location.service';
   selector: 'app-main-app',
   templateUrl: './main-app.component.html',
   styleUrls: ['./main-app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainAppComponent implements OnInit {
   constructor(
     private _location: LocationService,
-    private _cdRef: ChangeDetectorRef
   ) { }
 
 
@@ -23,11 +21,11 @@ export class MainAppComponent implements OnInit {
     return this._location.isLocated;
   }
 
-  public locationListReversed:Observable<LocationValuesInterface[]>=this._location
-  .locationListReversed$
+  public locationListReversed: Observable<LocationValuesInterface[]> = this._location
+    .locationListReversed$
 
-  public locationLastValue:Observable<LocationValuesInterface>=this._location
-  .locationLastValue$
+  public locationLastValue: Observable<LocationValuesInterface> = this._location
+    .locationLastValue$
 
 
   public getLocation() {

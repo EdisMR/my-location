@@ -71,7 +71,22 @@ export class LocationService {
         /* prevent emit last value */
         let lastValue:LocationValuesInterface = this.locationLastValue.getValue();
         if (lastValue.latitude !== position.coords.latitude && lastValue.longitude !== position.coords.longitude) {
-          this.locationListSource.push(position.coords);
+
+          let parsedAccuracy:number = parseFloat(position.coords.accuracy.toFixed(2));
+          let parsedAltitude:number = parseFloat(position.coords.altitude.toFixed(2));
+          let parsedAltitudeAccuracy:number = parseFloat(position.coords.altitudeAccuracy.toFixed(2));
+          let parsedHeading:number = parseFloat(position.coords.heading.toFixed(2));
+          let parsedSpeed:number = parseFloat(position.coords.speed.toFixed(2));
+          this.locationListSource.push({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: parsedAccuracy,
+            altitude: parsedAltitude,
+            altitudeAccuracy: parsedAltitudeAccuracy,
+            heading: parsedHeading,
+            speed: parsedSpeed,
+            timestamp: position.timestamp
+          });
           this.locationListReversed.next(this.locationListSourceReversed);
           this.locationLastValue.next(position.coords);
         }

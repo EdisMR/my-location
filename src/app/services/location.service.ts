@@ -60,7 +60,6 @@ export class LocationService {
   /* **** PUBLIC ACTIONS **** */
   /* ********************* */
   public runObserverForLocation(): void {
-    console.log('runObserverForLocation()');
     this.stopObserverForLocation();
 
     let messageLocating:string=this._translateSvc.getOneText('locating');
@@ -72,12 +71,13 @@ export class LocationService {
         let lastValue:LocationValuesInterface = this.locationLastValue.getValue();
         if (lastValue.latitude !== position.coords.latitude && lastValue.longitude !== position.coords.longitude) {
 
-          let parsedAccuracy:number = parseFloat(position.coords.accuracy.toFixed(2));
-          let parsedAltitude:number = parseFloat(position.coords.altitude.toFixed(2));
-          let parsedAltitudeAccuracy:number = parseFloat(position.coords.altitudeAccuracy.toFixed(2));
-          let parsedHeading:number = parseFloat(position.coords.heading.toFixed(2));
-          let parsedSpeed:number = parseFloat(position.coords.speed.toFixed(2));
-          this.locationListSource.push({
+          let parsedAccuracy:number = position.coords.accuracy ? parseFloat(position.coords.accuracy.toFixed(2)) : 0;
+          let parsedAltitude:number = position.coords.altitude ? parseFloat(position.coords.altitude.toFixed(2)) : 0;
+          let parsedAltitudeAccuracy:number = position.coords.altitudeAccuracy ? parseFloat(position.coords.altitudeAccuracy.toFixed(2)) : 0;
+          let parsedHeading:number = position.coords.heading ? parseFloat(position.coords.heading.toFixed(2)) : 0;
+          let parsedSpeed:number = position.coords.speed ? parseFloat(position.coords.speed.toFixed(2)) : 0;
+
+          let data={
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             accuracy: parsedAccuracy,
@@ -86,9 +86,11 @@ export class LocationService {
             heading: parsedHeading,
             speed: parsedSpeed,
             timestamp: position.timestamp
-          });
+          }
+
+          this.locationListSource.push(data);
           this.locationListReversed.next(this.locationListSourceReversed);
-          this.locationLastValue.next(position.coords);
+          this.locationLastValue.next(data);
         }
         this.isLocated = true;
       },

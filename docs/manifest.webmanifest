@@ -2,7 +2,7 @@
   "name": "my-location",
   "short_name": "my-location",
   "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "background_color": "#333333",
   "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
@@ -56,6 +56,5 @@
       "type": "image/png",
       "purpose": "maskable any"
     }
-  ],
-  "splash_pages": "./splash"
+  ]
 }

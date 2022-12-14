@@ -11,7 +11,7 @@ export class LocationService {
 
   constructor(
     private _alert: AlertsService,
-    private _translateSvc:TranlateServiceApp
+    private _translateSvc: TranlateServiceApp
   ) { }
 
   /* ******************* */
@@ -26,31 +26,32 @@ export class LocationService {
 
   private locationWatcher: any
 
-  public isLocated: boolean = false;
-
   private locationListSource: LocationValuesInterface[] = [];
-  private get locationListSourceReversed(): LocationValuesInterface[] {
-    return this.locationListSource.reverse();
-  }
-  private locationListReversed:BehaviorSubject<LocationValuesInterface[]> = new BehaviorSubject<LocationValuesInterface[]>(this.locationListSourceReversed);
-  public locationListReversed$:Observable<LocationValuesInterface[]> = this.locationListReversed.asObservable();
+  private locationListSourceReversed: LocationValuesInterface[] = [];
 
-  private locationLastValue:BehaviorSubject<LocationValuesInterface> = new BehaviorSubject<LocationValuesInterface>({} as LocationValuesInterface);
-  public locationLastValue$:Observable<LocationValuesInterface> = this.locationLastValue.asObservable();
+  private locationList: BehaviorSubject<LocationValuesInterface[]> = new BehaviorSubject<LocationValuesInterface[]>(this.locationListSource);
+  public locationList$: Observable<LocationValuesInterface[]> = this.locationList.asObservable();
 
+  private locationListReversed: BehaviorSubject<LocationValuesInterface[]> = new BehaviorSubject<LocationValuesInterface[]>(this.locationListSourceReversed);
+  public locationListReversed$: Observable<LocationValuesInterface[]> = this.locationListReversed.asObservable();
 
+  private locationLastValue: BehaviorSubject<LocationValuesInterface> = new BehaviorSubject<LocationValuesInterface>({} as LocationValuesInterface);
+  public locationLastValue$: Observable<LocationValuesInterface> = this.locationLastValue.asObservable();
+
+  private isLocated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isLocated$: Observable<boolean> = this.isLocated.asObservable();
 
 
   /* ****************** */
   /* **** GET VALUES **** */
   /* ****************** */
   private get getCoordinatesSourceText(): string {
-    let locationLastValueTemp:LocationValuesInterface = this.locationLastValue.getValue();
+    let locationLastValueTemp: LocationValuesInterface = this.locationLastValue.getValue();
     return `${locationLastValueTemp.latitude},${locationLastValueTemp.longitude}`;
   }
 
   private get getLocationMapsUrl(): string {
-    let locationLastValueTemp:LocationValuesInterface = this.locationLastValue.getValue();
+    let locationLastValueTemp: LocationValuesInterface = this.locationLastValue.getValue();
     return `https://maps.google.com/?q=${locationLastValueTemp.latitude},${locationLastValueTemp.longitude}`;
   }
 
@@ -62,44 +63,57 @@ export class LocationService {
   public runObserverForLocation(): void {
     this.stopObserverForLocation();
 
-    let messageLocating:string=this._translateSvc.getOneText('locating');
+    let messageLocating: string = this._translateSvc.getOneText('locating');
     this._alert.message(messageLocating);
 
+    this.locationListSource = [];
+    this.locationListSourceReversed = [];
+    this.locationList.next(this.locationListSource);
+    this.locationListReversed.next(this.locationListSourceReversed);
+    this.locationLastValue.next({} as LocationValuesInterface);
+    this.isLocated.next(false);
+
     this.locationWatcher = navigator.geolocation.watchPosition(
-      (position:any) => {
-        /* prevent emit last value */
-        let lastValue:LocationValuesInterface = this.locationLastValue.getValue();
-        if (lastValue.latitude !== position.coords.latitude && lastValue.longitude !== position.coords.longitude) {
-
-          let parsedAccuracy:number = position.coords.accuracy ? parseFloat(position.coords.accuracy.toFixed(2)) : 0;
-          let parsedAltitude:number = position.coords.altitude ? parseFloat(position.coords.altitude.toFixed(2)) : 0;
-          let parsedAltitudeAccuracy:number = position.coords.altitudeAccuracy ? parseFloat(position.coords.altitudeAccuracy.toFixed(2)) : 0;
-          let parsedHeading:number = position.coords.heading ? parseFloat(position.coords.heading.toFixed(2)) : 0;
-          let parsedSpeed:number = position.coords.speed ? parseFloat(position.coords.speed.toFixed(2)) : 0;
-
-          let data={
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            accuracy: parsedAccuracy,
-            altitude: parsedAltitude,
-            altitudeAccuracy: parsedAltitudeAccuracy,
-            heading: parsedHeading,
-            speed: parsedSpeed,
-            timestamp: position.timestamp
-          }
-
-          this.locationListSource.push(data);
-          this.locationListReversed.next(this.locationListSourceReversed);
-          this.locationLastValue.next(data);
-        }
-        this.isLocated = true;
+      (position: any) => {
+        this.locationDataSuccess(position);
       },
       (err) => {
-        let messageErrorLocating:string=this._translateSvc.getOneText('error-locating');
-        this._alert.error(messageErrorLocating,'Ok');
+        let messageErrorLocating: string = this._translateSvc.getOneText('error-locating');
+        this._alert.error(messageErrorLocating, 'Ok');
       },
       this.options
     );
+  }
+
+  private locationDataSuccess(position: any) {
+    /* prevent emit last value */
+    let lastValue: LocationValuesInterface = this.locationLastValue.getValue();
+    if (lastValue.latitude !== position.coords.latitude && lastValue.longitude !== position.coords.longitude) {
+
+      let parsedAccuracy: number = position.coords.accuracy ? parseFloat(position.coords.accuracy.toFixed(2)) : 0;
+      let parsedAltitude: number = position.coords.altitude ? parseFloat(position.coords.altitude.toFixed(2)) : 0;
+      let parsedAltitudeAccuracy: number = position.coords.altitudeAccuracy ? parseFloat(position.coords.altitudeAccuracy.toFixed(2)) : 0;
+      let parsedHeading: number = position.coords.heading ? parseFloat(position.coords.heading.toFixed(2)) : 0;
+      let parsedSpeed: number = position.coords.speed ? parseFloat(position.coords.speed.toFixed(2)) : 0;
+
+      let data = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: parsedAccuracy,
+        altitude: parsedAltitude,
+        altitudeAccuracy: parsedAltitudeAccuracy,
+        heading: parsedHeading,
+        speed: parsedSpeed,
+        timestamp: position.timestamp
+      }
+
+      this.locationListSource.push(data);
+      this.locationListSourceReversed.unshift(data);
+      this.locationList.next(this.locationListSource);
+      this.locationListReversed.next(this.locationListSourceReversed);
+      this.locationLastValue.next(data);
+      this.isLocated.next(true);
+    }
   }
 
   public stopObserverForLocation() {
@@ -107,7 +121,7 @@ export class LocationService {
   }
 
   public shareLocation() {
-    let messageMyCurrentLocation:string=this._translateSvc.getOneText('my-current-location');
+    let messageMyCurrentLocation: string = this._translateSvc.getOneText('my-current-location');
     window.navigator
       .share({
         title: messageMyCurrentLocation,
@@ -117,7 +131,7 @@ export class LocationService {
   }
 
   public copyTextClipboard() {
-    let messageCopiedLocation:string=this._translateSvc.getOneText('copied-location');
+    let messageCopiedLocation: string = this._translateSvc.getOneText('copied-location');
     navigator.clipboard.writeText(this.getCoordinatesSourceText).then(() => {
       this._alert.success(messageCopiedLocation);
     });

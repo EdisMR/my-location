@@ -16,10 +16,10 @@ export class TranlateServiceApp {
     const savedLang = localStorage.getItem('lang');
     if (savedLang) {
       this._translate.use(savedLang);
-    }else{
-      if(navigator.language.includes('es')){
+    } else {
+      if (navigator.language.includes('es')) {
         this._translate.use('es');
-      }else{
+      } else {
         this._translate.use('en');
       }
     }
@@ -34,7 +34,7 @@ export class TranlateServiceApp {
     return this._translate.currentLang;
   }
 
-  public getOneText(index:string) {
+  public getOneText(index: string) {
     return this._translate.instant(index);
   }
 

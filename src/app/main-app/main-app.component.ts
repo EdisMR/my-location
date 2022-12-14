@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LocationValuesInterface } from '../interfaces/location-types';
 import { LocationService } from '../services/location.service';
 
@@ -17,9 +17,12 @@ export class MainAppComponent implements OnInit {
   /* ********************** */
   /* **** LOCATION VALUES **** */
   /* ********************** */
-  public get isLocated(): boolean {
-    return this._location.isLocated;
-  }
+  public isLocated: boolean = false;
+
+  private isLocatedSubscription: Subscription = this._location.isLocated$
+  .subscribe((isLocated: boolean) => {
+    this.isLocated = isLocated;
+  })
 
   public locationListReversed: Observable<LocationValuesInterface[]> = this._location
     .locationListReversed$
@@ -57,5 +60,6 @@ export class MainAppComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.clearLocationObserver();
+    this.isLocatedSubscription?.unsubscribe();
   }
 }

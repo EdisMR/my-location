@@ -1,7 +1,7 @@
 {
   "app-title": "Mi Ubicación",
-  "share-location": "Compartir ubicación",
-  "copy-location": "Copiar ubicación",
+  "share-location": "Compartir ubicación en apps",
+  "copy-location": "Copiar ubicación (Lat, Long)",
   "open-location-gmaps": "Abrir en Google Maps",
   "lat": "Latitud",
   "lng": "Longitud",

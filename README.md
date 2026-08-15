@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.3.
 
-- Angular CLI: 12.1.4
+- Angular CLI: 15.1.4
 - Node: 14.21.3
 - Package Manager: npm 6.14.18
 - OS: win32 x64
